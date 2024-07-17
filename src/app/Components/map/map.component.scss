@@ -1,0 +1,67 @@
+
+.minions-count {
+  font-size: 2.5rem;  // Larger font size for emphasis
+  color: #ffffff;  // White text for contrast
+  background: linear-gradient(135deg, rgb(255, 255, 255), #ffffff);  // Subtle gradient background
+  background-clip: text;  // Clip background to text
+  -webkit-background-clip: text;  // WebKit-specific background clip
+  -webkit-text-fill-color: transparent;  // Fill text with transparent to show gradient
+  border: 2px solid rgba(255, 255, 255, 0.3);  // Subtle border around the text
+  padding: 10px 20px;  // Padding for space around the text
+  border-radius: 8px;  // Rounded corners for a softer look
+  text-align: center;  // Center the text
+  display: inline-block;  // Make sure it fits its content
+  margin-bottom: 1rem;  // Space below the header
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  // Subtle shadow for depth
+}
+
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px #ff0057, 0 0 20px #ff0057, 0 0 30px #ff0057, 0 0 40px #ff0057, 0 0 50px #ff0057, 0 0 60px #ff0057, 0 0 70px #ff0057;
+  }
+  to {
+    text-shadow: 0 0 20px #6a00ff, 0 0 30px #6a00ff, 0 0 40px #6a00ff, 0 0 50px #6a00ff, 0 0 60px #6a00ff, 0 0 70px #6a00ff, 0 0 80px #6a00ff;
+  }
+}
+.row {
+  display: flex;
+}
+
+.cell {
+  width: 60px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ddd;
+  background-color: #fff;  // White background for cells
+  position: relative;  // Ensure the box-shadow stays within the cell
+
+  // Subtle glow effect
+  box-shadow:
+    0 0 2px rgba(255, 255, 255, 0.3),
+    0 0 5px rgba(0, 128, 255, 0.3),
+    0 0 10px rgba(0, 128, 255, 0.3);  // Reduced glow layers
+
+  // Optional: Change border color to match glow
+  border-color: rgba(0, 128, 255, 0.2);
+}
+
+
+.snake {
+  background-color: #243127; /* Navy blue for snake cells */
+  color: #fff; /* Ensure the text is visible on navy background */
+}
+
+.food {
+  background-color: red; /* Red background for food cells */
+  color: #fff; /* Ensure the text is visible on red background */
+}
+
+.snake-img,
+.food-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Make sure the images cover the entire cell */
+}

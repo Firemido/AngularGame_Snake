@@ -1,0 +1,10 @@
+<h2 class="minions-count">CS {{minions}}</h2>
+<div *ngFor="let row of map; let y = index" class="row">
+  <div *ngFor="let columns of row; let x = index" class="cell"
+    [ngClass]="{'snake': columns === 1, 'food': columns === 2}">
+    <img *ngIf="columns === 1 && isSnakeHead(x, y)" src="assets/snake.png" alt="snake head" class="snake-img">
+    <span *ngIf="columns === 1 && !isSnakeHead(x, y)"></span>
+    <img *ngIf="columns === 2" src="assets/food.jpg" alt="food" class="food-img">
+  </div>
+</div>
+<app-snake (snakeDiraction)="getSnakeDiraction($event)" (foodCoordinate)="getFoodCoordinate($event)"></app-snake>
