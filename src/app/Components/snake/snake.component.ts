@@ -88,17 +88,41 @@ export class SnakeComponent implements OnInit {
     this.snake = size;
   }
 
+  
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
-    if (event.key === 'ArrowRight' && this.direction !== 'left') {
-      this.direction = 'right';
-    } else if (event.key === 'ArrowLeft' && this.direction !== 'right') {
-      this.direction = 'left';
-    } else if (event.key === 'ArrowUp' && this.direction !== 'down') {
-      this.direction = 'up';
-    } else if (event.key === 'ArrowDown' && this.direction !== 'up') {
-      this.direction = 'down';
+    const key = event.key.toLowerCase();
+  
+    switch (key) {
+      case 'arrowright':
+      case 'd':
+        if (this.direction !== 'left') {
+          this.direction = 'right';
+        }
+        break;
+      case 'arrowleft':
+      case 'a':
+        if (this.direction !== 'right') {
+          this.direction = 'left';
+        }
+        break;
+      case 'arrowup':
+      case 'w':
+        if (this.direction !== 'down') {
+          this.direction = 'up';
+        }
+        break;
+      case 'arrowdown':
+      case 's':
+        if (this.direction !== 'up') {
+          this.direction = 'down';
+        }
+        break;
+      default:
+        // Handle other keys if needed
+        break;
     }
   }
+  
 
 }

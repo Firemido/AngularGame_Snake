@@ -1,16 +1,42 @@
+<button class="leaderBoard-button" (click)="saveScoreIntoDatabase()">LeaderBoard</button>
 <div class="minions-container">
+  <div class="user-name">Top Player : {{topPlayer}}</div>
+
+</div>
+  <div class="minions-container">
+  <div class="minions-count-group">
   <div class="minions-count">CS {{minions}}</div>
+  </div>
   <div class="minions-count-group">
     <div class="minions-count second">Highest Score {{highestScore}}</div>
-    <button class="minions-button" (click)="saveScoreIntoDatabase()">Save</button>
+    <button class="minions-button" (click)="openModal()">Save</button>
   </div>
 </div>
-<div *ngFor="let row of map; let y = index" class="row">
-  <div *ngFor="let columns of row; let x = index" class="cell"
-    [ngClass]="{'snake': columns === 1, 'food': columns === 2}">
-    <img *ngIf="columns === 1 && isSnakeHead(x, y)" src="assets/snake.png" alt="snake head" class="snake-img">
-    <span *ngIf="columns === 1 && !isSnakeHead(x, y)"></span>
-    <img *ngIf="columns === 2" src="assets/food.jpg" alt="food" class="food-img">
+
+<div class="game-board-container">
+  <div *ngFor="let row of map; let y = index" class="row">
+    <div *ngFor="let columns of row; let x = index" class="cell"
+      [ngClass]="{'snake': columns === 1, 'food': columns === 2}">
+      <img *ngIf="columns === 1 && isSnakeHead(x, y)" src="assets/snake.png" alt="snake head" class="snake-img">
+      <span *ngIf="columns === 1 && !isSnakeHead(x, y)"></span>
+      <img *ngIf="columns === 2" src="assets/food.jpg" alt="food" class="food-img">
+    </div>
   </div>
 </div>
+
 <app-snake (snakeDiraction)="getSnakeDiraction($event)" (foodCoordinate)="getFoodCoordinate($event)"></app-snake>
+
+<div *ngIf="isModalOpen">
+  <div class="modal-overlay"></div>
+  <div class="modal">
+    <div class="modal-content">
+      <h2>Enter Your Username</h2>
+      <p>Please provide a username:</p>
+      <input type="text" placeholder="Your Username" [(ngModel)]="player.name" name="username">
+      <div class="button-container">
+        <button class="modal-button primary" (click)="saveScoreIntoDatabase()">Confirm</button>
+        <button class="modal-button secondary" (click)="closeModal()">Cancel</button>
+      </div>
+      
+  </div>
+</div>

@@ -16,7 +16,7 @@ html, body {
   align-items: center;
   justify-content: center;
   overflow: hidden;  // Prevent scrolling if not needed
-
+  z-index: 1;
   .shape {
     position: absolute;
     border-radius: 50%;

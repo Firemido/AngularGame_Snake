@@ -5,24 +5,33 @@ import { Component, OnInit, EventEmitter, Output, HostListener } from '@angular/
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
+
 export class MapComponent implements OnInit {
 
 
-
+  isModalOpen = false; // Track modal visibility
   constructor() {}
 
-  map: any[] = [];
+    map: any[] = [];
   food: any;
   snake: { x: number, y: number }[] = [];
 
+  player: any = {
+    name: "",
+    score: 0
+  };
+  
+
   highestScore:any = 0;
 
+  topPlayer : any 
   topScoresList: any[] = [];
   minions: any;
 
   @Output() newSize = new EventEmitter<{ x: number, y: number }[]>();
 
   ngOnInit() {
+    this.topPlayer = this.topScoresList[0]?.name
     this.createMap();
   }
 
@@ -67,10 +76,31 @@ export class MapComponent implements OnInit {
 
 
   saveScoreIntoDatabase(){
-    console.log(this.highestScore)
+
+    this.player.score = this.highestScore;
+    
+    this.topScoresList.push(this.player);
+
+    this.topPlayer = this.topScoresList[0]?.name
+
+    this.isModalOpen = false
 
   }
 
+
+  openModal()
+  {
+    this.isModalOpen = true;
+    
+  }
+  
+
+
+  closeModal()
+  {
+    this.isModalOpen = false
+  }
+  
 
   endSaveReset(){
     console.log(1);
