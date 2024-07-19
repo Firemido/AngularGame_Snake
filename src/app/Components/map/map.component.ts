@@ -1,5 +1,4 @@
 import { Component, OnInit, EventEmitter, Output, HostListener } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-map',
@@ -10,7 +9,7 @@ export class MapComponent implements OnInit {
 
 
 
-  constructor(private modalService: NgbModal) {}
+  constructor() {}
 
   map: any[] = [];
   food: any;
@@ -67,10 +66,9 @@ export class MapComponent implements OnInit {
   }
 
 
-  saveScoreIntoDatabase(content: any){
+  saveScoreIntoDatabase(){
     console.log(this.highestScore)
 
-    this.modalService.open(content);
   }
 
 
