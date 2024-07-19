@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, HostListener } from '@angular/core';
-
+import { FirebaseService } from '../../services/firebase.service';
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -10,7 +10,7 @@ export class MapComponent implements OnInit {
 
 
   isModalOpen = false; // Track modal visibility
-  constructor() {}
+  constructor(private firebaseService: FirebaseService) {}
 
     map: any[] = [];
   food: any;
@@ -31,7 +31,9 @@ export class MapComponent implements OnInit {
   @Output() newSize = new EventEmitter<{ x: number, y: number }[]>();
 
   ngOnInit() {
-    this.topPlayer = this.topScoresList[0]?.name
+
+    this.getData()
+
     this.createMap();
   }
 
@@ -79,9 +81,9 @@ export class MapComponent implements OnInit {
 
     this.player.score = this.highestScore;
     
-    this.topScoresList.push(this.player);
+    this.topScoresList.unshift(this.player);
 
-    this.topPlayer = this.topScoresList[0]?.name
+    this.topPlayer = this.topScoresList.find(entry => true)?.name
 
     this.isModalOpen = false
 
@@ -108,5 +110,26 @@ export class MapComponent implements OnInit {
   }
 
 
+
+
+  async addData() {
+    const newItem = { name: 'Test Item', timestamp: new Date() };
+    const docId = await this.firebaseService.addDocument('leaderboard', newItem);
+    console.log('Document added with ID:', docId);
+  }
+
+  async getData() {
+
+    
+    const leaderboardData = await this.firebaseService.getDocuments('leaderboard');
+    leaderboardData.forEach((entry : any) => {
+      this.topScoresList.push(entry);
+      // You can do whatever you need with 'name' and 'score'
+    });
+
+    this.topPlayer = this.topScoresList.find(entry => true).name
+    console.log(this.topScoresList[0]?.name)
+        console.log(this.topScoresList);
+  }
 
 }
