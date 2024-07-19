@@ -1,4 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, HostListener } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-map',
@@ -6,11 +7,18 @@ import { Component, OnInit, EventEmitter, Output, HostListener } from '@angular/
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
+
+
+
+  constructor(private modalService: NgbModal) {}
+
   map: any[] = [];
   food: any;
   snake: { x: number, y: number }[] = [];
 
+  highestScore:any = 0;
 
+  topScoresList: any[] = [];
   minions: any;
 
   @Output() newSize = new EventEmitter<{ x: number, y: number }[]>();
@@ -34,11 +42,17 @@ export class MapComponent implements OnInit {
     this.minions = this.snake.length
     this.createMap();
 
+    if(this.minions > this.highestScore)
+    {
+      this.highestScore = this.minions;
+    }
+
     snake.forEach((part) => {
 
       // Mark snake part on the map
       this.map[part.y][part.x] = 1;
     });
+
     // Mark food position on the map
     if (this.food) {
       this.map[this.food.y][this.food.x] = 2;
@@ -46,8 +60,25 @@ export class MapComponent implements OnInit {
 
   }
 
+
   isSnakeHead(x: number, y: number): boolean {
     const head = this.snake[0];
     return head && head.x === x && head.y === y;
   }
+
+
+  saveScoreIntoDatabase(content: any){
+    console.log(this.highestScore)
+
+    this.modalService.open(content);
+  }
+
+
+  endSaveReset(){
+    console.log(1);
+    this.createMap();
+  }
+
+
+
 }

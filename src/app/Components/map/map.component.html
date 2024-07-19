@@ -1,4 +1,10 @@
-<h2 class="minions-count">CS {{minions}}</h2>
+<div class="minions-container">
+  <div class="minions-count">CS {{minions}}</div>
+  <div class="minions-count-group">
+    <div class="minions-count second">Highest Score {{highestScore}}</div>
+    <button class="minions-button" (click)="saveScoreIntoDatabase(Score)" >Save</button>
+  </div>
+</div>
 <div *ngFor="let row of map; let y = index" class="row">
   <div *ngFor="let columns of row; let x = index" class="cell"
     [ngClass]="{'snake': columns === 1, 'food': columns === 2}">
@@ -8,3 +14,20 @@
   </div>
 </div>
 <app-snake (snakeDiraction)="getSnakeDiraction($event)" (foodCoordinate)="getFoodCoordinate($event)"></app-snake>
+
+
+
+<ng-template #Score let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Score Modal</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Your content goes here.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+  </div>
+</ng-template>
