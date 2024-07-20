@@ -16,6 +16,6 @@ export class FirebaseService {
   // Get all documents from a collection
   async getDocuments(collectionName: string) {
     const querySnapshot = await getDocs(collection(this.firestore, collectionName));
-    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    return querySnapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }));
   }
 }
