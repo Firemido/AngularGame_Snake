@@ -14,20 +14,41 @@ export class SnakeComponent implements OnInit {
   snake: { x: number, y: number }[] = [{ x: 5, y: 5 }]
   direction: string = 'right';
   food: { x: number, y: number } = { x: 10, y: 10 }; // Example food position
-  speedRun = 150;
+  speedRun = 90;  
+  moveInProgress = false;
+
+  private audioContext!: AudioContext;
+  private eatSoundBuffer: AudioBuffer | null = null;
+  
+
+  private eatSound!: HTMLAudioElement;
+
 
   ngOnInit() {
     this.moveSnakePeriodically();
+    this.initAudio();
+
+  }
+
+  initAudio() {
+    if (!this.audioContext) {
+      this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      this.loadSound();
+    }
   }
 
   moveSnakePeriodically() {
-    console.log(this.speedRun);
-    setInterval(() => {
+    const move = () => {
       this.moveSnake();
       this.snakeDiraction.emit(this.snake);
       this.foodCoordinate.emit(this.food);
-    }, this.speedRun); // Adjust the interval as needed
-
+  
+      // Schedule the next move
+      setTimeout(move, this.speedRun);
+    };
+  
+    // Start the movement
+    move();
   }
 
 
@@ -46,9 +67,8 @@ export class SnakeComponent implements OnInit {
 
     if (head.x == this.food.x && head.y == this.food.y) {
       this.snake.unshift(head);
-
-      this.food.x = Math.floor(Math.random() * 17);  // Random integer between 0 and 18
-      this.food.y = Math.floor(Math.random() * 10);  // Random integer between 0 and 11
+      this.generateFood();
+      this.playEatSound();
 
 
 
@@ -92,7 +112,15 @@ export class SnakeComponent implements OnInit {
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
     const key = event.key.toLowerCase();
-  
+    setTimeout(() => {
+      this.moveInProgress = false; // Reset the flag after 1 second
+    }, 70);
+    if(this.moveInProgress)
+    {
+      return ;  
+    }
+
+    this.moveInProgress = true;
     switch (key) {
       case 'arrowright':
       case 'd':
@@ -124,5 +152,45 @@ export class SnakeComponent implements OnInit {
     }
   }
   
+
+  generateFood() {
+    const randomIndex = Math.floor(Math.random() * this.getEmptyCells().length);
+    this.food = this.getEmptyCells()[randomIndex];
+  }
+
+  // using map to reduce the time complexity of generating new food
+  getEmptyCells(): { x: number, y: number }[] {
+    const snakePositions = new Set(this.snake.map(pos => `${pos.x},${pos.y}`));
+  
+
+    return Array.from({ length: 18 * 12 }, (useless, i) => ({
+      x: i % 18,
+      y: Math.floor(i / 18)
+    })).filter(pos => !snakePositions.has(`${pos.x},${pos.y}`));
+  }
+
+  // Advanced way to play the sounds files 
+  async loadSound() {
+    try {
+      const response = await fetch('assets/Sounds/FoodSound.mp3');
+      const arrayBuffer = await response.arrayBuffer();
+      this.eatSoundBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
+    } catch (error) {
+      console.error('Error loading sound:', error);
+    }
+  }
+
+  playEatSound() {
+    if (!this.audioContext) {
+      this.initAudio();
+    }
+    if (this.eatSoundBuffer) {
+      const source = this.audioContext.createBufferSource();
+      source.buffer = this.eatSoundBuffer;
+      source.connect(this.audioContext.destination);
+      source.start(0);
+    }
+  }
+
 
 }

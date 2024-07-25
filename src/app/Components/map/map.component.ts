@@ -38,9 +38,11 @@ export class MapComponent implements OnInit {
   }
 
   createMap() {
-    const rows = 12;
-    const cols = 18;
-    this.map = Array.from({ length: rows }, () => Array(cols).fill(0));
+    const cols = 12;
+    const rows = 18;
+
+    
+    this.map = Array.from({ length: cols }, () => Array.from({ length: rows }));
   }
 
   getFoodCoordinate(food: { x: number, y: number }) {
@@ -57,11 +59,11 @@ export class MapComponent implements OnInit {
       this.highestScore = this.minions;
     }
 
-    snake.forEach((part) => {
-
-      // Mark snake part on the map
+    for(let part of snake)
+    {
       this.map[part.y][part.x] = 1;
-    });
+    }
+
 
     // Mark food position on the map
     if (this.food) {
@@ -122,10 +124,10 @@ export class MapComponent implements OnInit {
 
     
     const leaderboardData = await this.firebaseService.getDocuments('leaderboard');
-    leaderboardData.forEach((entry : any) => {
-      this.topScoresList.push(entry);
-      // You can do whatever you need with 'name' and 'score'
-    });
+    for(let entry of leaderboardData)
+    {
+      this.topScoresList.push(entry)
+    }
 
     this.topPlayer = this.topScoresList.find(entry => true).name
     console.log(this.topScoresList[0]?.name)
