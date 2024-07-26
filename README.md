@@ -1,6 +1,6 @@
 TRY IT OUT https://snake-league.firebaseapp.com/
 
-
+https://github.com/user-attachments/assets/79fe2a91-8149-444a-9de4-bd4623f875c7
 
 # Snake Game based on League of Legends 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.5.
