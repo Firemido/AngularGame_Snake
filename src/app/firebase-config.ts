@@ -1,3 +1,4 @@
+// add your firebase here for leaderboard score
 export const firebaseConfig = {
   apiKey: "AIzaSyBX1OaaYURzAA4cOynGay1al9ndlieKl9k",
   authDomain: "snake-league.firebaseapp.com",
