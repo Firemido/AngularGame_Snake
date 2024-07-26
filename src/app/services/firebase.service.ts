@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, addDoc, getDocs } from '@angular/fire/firestore';
+import { doc , setDoc } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,9 @@ export class FirebaseService {
 
   // Add a new document to a collection
   async addDocument(collectionName: string, data: any) {
-    const docRef = await addDoc(collection(this.firestore, collectionName), data);
+    const docRef = await doc(collection(this.firestore, collectionName), data.userCode)
+
+    await setDoc(docRef, data);
     return docRef.id;
   }
 

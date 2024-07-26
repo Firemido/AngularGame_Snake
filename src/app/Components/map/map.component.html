@@ -1,4 +1,4 @@
-<button class="leaderBoard-button" (click)="saveScoreIntoDatabase()">LeaderBoard</button>
+<button class="leaderBoard-button" (click)="openLeaderBoard()">LeaderBoard</button>
 <div class="minions-container">
   <div class="user-name">Top Player : {{topPlayer}}</div>
 
@@ -26,6 +26,11 @@
 
 <app-snake (snakeDiraction)="getSnakeDiraction($event)" (foodCoordinate)="getFoodCoordinate($event)"></app-snake>
 
+
+
+
+
+
 <div *ngIf="isModalOpen">
   <div class="modal-overlay"></div>
   <div class="modal">
@@ -36,7 +41,24 @@
       <div class="button-container">
         <button class="modal-button primary" (click)="saveScoreIntoDatabase()">Confirm</button>
         <button class="modal-button secondary" (click)="closeModal()">Cancel</button>
+      </div>  
+  </div>
+</div>
+</div>
+
+
+<div *ngIf="isLeaderboardOpen">
+  <div class="modal-overlay"></div>
+  <div class="modal">
+    <div class="modal-content">
+      <h2>Leaderboard</h2>
+      <div *ngFor="let player of topScoresList" class="player-entry">
+        <span class="player-name">{{ player.name }}</span>
+        <span class="player-score">{{ player.score }}</span>
       </div>
-      
+      <div class="button-container">
+        <button class="modal-button secondary" (click)="closeLeaderboard()">Close</button>
+      </div>
+    </div>
   </div>
 </div>

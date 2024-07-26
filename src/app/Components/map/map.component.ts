@@ -8,7 +8,7 @@ import { FirebaseService } from '../../services/firebase.service';
 
 export class MapComponent implements OnInit {
 
-
+  isLeaderboardOpen = false;
   isModalOpen = false; // Track modal visibility
   constructor(private firebaseService: FirebaseService) {}
 
@@ -17,8 +17,7 @@ export class MapComponent implements OnInit {
   snake: { x: number, y: number }[] = [];
 
   player: any = {
-    name: "",
-    score: 0
+    name: undefined,
   };
   
 
@@ -27,10 +26,13 @@ export class MapComponent implements OnInit {
   topPlayer : any 
   topScoresList: any[] = [];
   minions: any;
+  userSetion : any;
 
   @Output() newSize = new EventEmitter<{ x: number, y: number }[]>();
 
   ngOnInit() {
+
+   this.userSetion = this.generateUserID();
 
     this.getData()
 
@@ -83,12 +85,10 @@ export class MapComponent implements OnInit {
 
     this.player.score = this.highestScore;
     
-    this.topScoresList.unshift(this.player);
+    this.addData(this.player.name);
 
-    this.topPlayer = this.topScoresList.find(entry => true)?.name
-
-    this.isModalOpen = false
-
+    this.isModalOpen = false;
+    
   }
 
 
@@ -114,24 +114,50 @@ export class MapComponent implements OnInit {
 
 
 
-  async addData() {
-    const newItem = { name: 'Test Item', timestamp: new Date() };
+  async addData(name :string) {
+    
+    const newItem = { userCode:this.userSetion , name: name, score:this.highestScore  , timestamp: new Date() };
+
     const docId = await this.firebaseService.addDocument('leaderboard', newItem);
     console.log('Document added with ID:', docId);
+    this.getData();
   }
 
   async getData() {
 
-    
+    this.topScoresList =[];
     const leaderboardData = await this.firebaseService.getDocuments('leaderboard');
+
     for(let entry of leaderboardData)
     {
       this.topScoresList.push(entry)
     }
 
-    this.topPlayer = this.topScoresList.find(entry => true).name
-    console.log(this.topScoresList[0]?.name)
-        console.log(this.topScoresList);
+    this.topScoresList.sort((a,b)=> a.score - b.score).reverse();
+
+    this.topPlayer = this.topScoresList[0].name
+
+
   }
 
+  generateUserID() : string {
+
+    let  id = "";
+    let charPool= "QWERTUIOP[]ASDFGHKL;'ZXCVBNM,./qwerttyuiopasddfghgjklzxcvbnm,./!@#$%^&*()_+1234567890-=";
+
+    for(let i = 0 ; i < 10 ; i++){
+
+      id= id.concat(charPool[Math.floor(Math.random() * charPool.length)])
+    }
+    
+    return id 
+  }
+
+  openLeaderBoard(){
+    console.log(1);
+    this.isLeaderboardOpen = true;
+  }
+  closeLeaderboard() {
+    this.isLeaderboardOpen = false;
+  }
 }

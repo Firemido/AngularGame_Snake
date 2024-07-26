@@ -28,6 +28,7 @@ export class SnakeComponent implements OnInit {
     this.moveSnakePeriodically();
     this.initAudio();
 
+
   }
 
   initAudio() {
@@ -114,7 +115,7 @@ export class SnakeComponent implements OnInit {
     const key = event.key.toLowerCase();
     setTimeout(() => {
       this.moveInProgress = false; // Reset the flag after 1 second
-    }, 70);
+    }, 90);
     if(this.moveInProgress)
     {
       return ;  
@@ -154,8 +155,9 @@ export class SnakeComponent implements OnInit {
   
 
   generateFood() {
-    const randomIndex = Math.floor(Math.random() * this.getEmptyCells().length);
-    this.food = this.getEmptyCells()[randomIndex];
+    let emptySpaces = this.getEmptyCells();
+    const randomIndex = Math.floor(Math.random() * emptySpaces.length);
+    this.food = emptySpaces[randomIndex];
   }
 
   // using map to reduce the time complexity of generating new food
@@ -191,6 +193,7 @@ export class SnakeComponent implements OnInit {
       source.start(0);
     }
   }
+
 
 
 }
